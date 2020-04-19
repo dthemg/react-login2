@@ -1,12 +1,10 @@
 var express = require('express');
-var mysql = require('mysql');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
-var mysqlConfig = require('../config/config');
+var dbConfig = require('./config/config');
 
 var app = express();
-var connection = mysql.createConnection(mysqlConfig);
-var sessionStore = new MySQLStore({}, connection);
+var sessionStore = new MySQLStore(dbConfig);
 
 // Middlewares
 app.use(session({
@@ -14,7 +12,7 @@ app.use(session({
   secret: 'session_cookie_secret',
   store: sessionStore,
   resave: false,
-  saveUninitialized: false // What does this do?
+  saveUninitialized: false
 }))
 
 module.exports = app;
