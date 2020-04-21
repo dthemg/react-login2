@@ -28,7 +28,7 @@ app.use(session({
 
 // Environments
 app.set('port', process.env.PORT || 9000);
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 console.log("Listening on port 9000");
