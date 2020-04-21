@@ -6,12 +6,14 @@ var mysql = require('mysql');
 var bodyParser = require('body-parser');
 
 var mysqlConfig = require('./config/config');
-var routes = require('./routes/user');
-var user = require('./routes/user');
-
+var routes = require('./routes/userRoutes');
 
 var app = express()
-// Create connection
+
+// Define routes
+app.use("/", routes);
+
+// Create SQL connection
 var connection = mysql.createConnection(mysqlConfig);
 connection.connect();
 global.db = connection;
