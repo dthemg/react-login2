@@ -1,4 +1,4 @@
-
+var sqlConnector = require("./connector");
 
 exports.home = (req, res) => {
   res.send("Return data used for the home page");
@@ -7,6 +7,8 @@ exports.home = (req, res) => {
 exports.login = (req, res) => {
   var message = "";
   var session = req.session;
+
+  console.log(req.body);
 
   // TODO: Keep working here, currently requests are empty for some reason...
   if (!req.body) {
@@ -24,17 +26,23 @@ exports.login = (req, res) => {
 
     var sqlQuery = "SELECT user_id, username, password FROM users WHERE username = ? AND password = ?"
     console.log("Attempting login");
-    db.query(sqlQuery, [username, password], function(error, results) {
-      if (results.length > 0) {
-        req.session.userId = results[0].user_id;
-        req.session.username = results[0].username;
-        console.log("Login attempt successful for user:");
-        console.log(req.session.userId);
-        console.log(req.session.username);
+    sqlConnector.dbConnection(function(err, conn) {
+      if (err) { 
+        console.log(err); 
+        return;
       } else {
-        console.log("Login attempt failed");
+        conn.query(sqlQuery, [username, password], function(error, results) {
+          if (results.length > 0) {
+            req.session.userId = results[0].user_id;
+            req.session.username = results[0].username;
+            console.log("Login attempt successful for user:");
+            console.log(req.session.userId);
+            console.log(req.session.username);
+          } else {
+            console.log("Login attempt failed");
+          }
+        });
       }
     });
   }
-
 }
