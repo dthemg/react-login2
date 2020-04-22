@@ -8,8 +8,6 @@ exports.login = (req, res) => {
   var message = "";
   var session = req.session;
 
-  console.log(req.body);
-
   // TODO: Keep working here, currently requests are empty for some reason...
   if (!req.body) {
     res.status(400).send({
@@ -27,9 +25,8 @@ exports.login = (req, res) => {
     var sqlQuery = "SELECT user_id, username, password FROM users WHERE username = ? AND password = ?"
     console.log("Attempting login");
     sqlConnector.dbConnection(function(err, conn) {
-      if (err) { 
+      if (err) {
         console.log(err); 
-        return;
       } else {
         conn.query(sqlQuery, [username, password], function(error, results) {
           if (results.length > 0) {

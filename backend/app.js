@@ -1,15 +1,12 @@
 var express = require('express');
 var session = require('express-session');
 var http = require('http');
-var path = require('path');
 var bodyParser = require('body-parser');
 var debug = require('debug')('sql-api:server');
 var routes = require('./routes/userRoutes');
 
+// Create app
 var app = express()
-
-// Define routes
-app.use("/", routes);
 
 // Session setup
 app.use(session({
@@ -20,24 +17,27 @@ app.use(session({
 }));
 
 // Environments
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Define routes
+app.use("/", routes);
+
+// Prepare server
 var port = process.env.PORT || '9000';
 app.set('port', port);
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
 var server = http.createServer(app);
 server.on('listening', onListening);
 server.on('error', onError);
 server.listen(port);
 console.log("Listening on port 9000");
 
-
 // HTTP listener for "listen" events
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  ? 'pipe ' + addr
+  : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
 

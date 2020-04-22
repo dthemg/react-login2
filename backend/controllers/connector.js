@@ -4,10 +4,10 @@ var exports = {};
 
 // SQL connection callback function
 exports.dbConnection = function (callback) {
-  console.log("Creating a new database connection");
+  console.log("Calling connector callback");
   var connection = mysql.createConnection(mysqlConfig);
   connection.connect(function(err) {
-    callback(err, db);
+    callback(err, connection);
   });
 };
 
