@@ -1,5 +1,7 @@
 var sqlConnector = require("./connector");
 
+
+
 exports.home = (req, res) => {
   res.send("Return data used for the home page");
 }
@@ -26,21 +28,32 @@ exports.login = (req, res) => {
     console.log("Attempting login");
     sqlConnector.dbConnection(function(err, conn) {
       if (err) {
-        throw err;
+        res.status(500).send({
+          message: err.message || "login server error"
+        });
       }
-      console.log("Connected!")
       conn.query(sqlQuery, [username, password], function(error, results) {
         if (results.length > 0) {
+          req.session.loggedIn = true;
           req.session.userId = results[0].user_id;
-          req.session.username = results[0].username;
-          console.log("Login attempt successful for user:");
-          console.log(req.session.userId);
-          console.log(req.session.username);
+          console.log("Login attempt successful");
+          res.status(200).send({
+            message: "User was logged in"
+          });
         } else {
-          console.log("Login attempt failed");
+          res.status(404).send({
+            message: "User not found"
+          })
         }
       });
-      
     });
   }
+}
+
+exports.profile = (req, res) => {
+  if (!req.session.loggedIn) {
+    res.send("User isn't logged in dumbo");
+  }
+
+  console.log(req.session.userId);
 }

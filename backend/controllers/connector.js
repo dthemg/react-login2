@@ -6,10 +6,8 @@ var exports = {};
 exports.dbConnection = function (callback) {
   console.log("Calling connector callback");
   var connection = mysql.createConnection(mysqlConfig);
-  console.log("created connection")
   connection.connect(function(err) {
     if (err) throw err;
-    console.log("Creating the connection...")
     callback(err, connection);
   });
 };
