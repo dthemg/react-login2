@@ -6,6 +6,19 @@ exports.home = (req, res) => {
   res.send("Return data used for the home page");
 }
 
+exports.isLoggedIn = (req, res) => {
+  var session = req.session;
+  if (req.session.loggedIn) {
+    res.send({
+      loggedIn: true
+    })
+  } else {
+    res.send({
+      loggedIn: false
+    })
+  }
+}
+
 exports.login = (req, res) => {
   var message = "";
   var session = req.session;
@@ -54,6 +67,5 @@ exports.profile = (req, res) => {
   if (!req.session.loggedIn) {
     res.send("User isn't logged in dumbo");
   }
-
   console.log(req.session.userId);
 }
