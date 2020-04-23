@@ -26,20 +26,21 @@ exports.login = (req, res) => {
     console.log("Attempting login");
     sqlConnector.dbConnection(function(err, conn) {
       if (err) {
-        console.log(err); 
-      } else {
-        conn.query(sqlQuery, [username, password], function(error, results) {
-          if (results.length > 0) {
-            req.session.userId = results[0].user_id;
-            req.session.username = results[0].username;
-            console.log("Login attempt successful for user:");
-            console.log(req.session.userId);
-            console.log(req.session.username);
-          } else {
-            console.log("Login attempt failed");
-          }
-        });
+        throw err;
       }
+      console.log("Connected!")
+      conn.query(sqlQuery, [username, password], function(error, results) {
+        if (results.length > 0) {
+          req.session.userId = results[0].user_id;
+          req.session.username = results[0].username;
+          console.log("Login attempt successful for user:");
+          console.log(req.session.userId);
+          console.log(req.session.username);
+        } else {
+          console.log("Login attempt failed");
+        }
+      });
+      
     });
   }
 }
