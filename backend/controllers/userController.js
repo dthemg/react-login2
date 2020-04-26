@@ -29,6 +29,11 @@ exports.signUp = (req, res) => {
 
   var username = req.body.username;
   var password = req.body.password;
+
+  console.log("Preparing add...")
+  console.log(username);
+  console.log(password)
+
   var sqlQuery = "INSERT INTO users SET username = ?, password = ?";
   sqlConnector.dbConnection(function(err, conn) {
     if(err) {
