@@ -4,6 +4,7 @@ var http = require('http');
 var bodyParser = require('body-parser');
 var debug = require('debug')('sql-api:server');
 var routes = require('./routes/userRoutes');
+var cors = require('cors');
 
 // Create app
 var app = express()
@@ -19,6 +20,7 @@ app.use(session({
 // Environments
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 // Define routes
 app.use("/", routes);
