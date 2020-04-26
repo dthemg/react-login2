@@ -19,6 +19,37 @@ exports.isLoggedIn = (req, res) => {
   }
 }
 
+exports.signUp = (req, res) => {
+  if (!req.body) {
+    res.status(500).send({
+      message: "POST content empty"
+    });
+    return
+  }
+
+  var username = req.body.username;
+  var password = req.body.password;
+  var sqlQuery = "INSERT INTO users SET username = ?, password = ?";
+  sqlConnector.dbConnection(function(err, conn) {
+    if(err) {
+      res.status(500).send({
+        message: err.message || "registering error"
+      });
+    }
+    conn.query(sqlQuery, [username, password], function(error, results) {
+      if (error) {
+        console.log(error);
+        results.status(500).send({
+          message: error.message || "registering sql error"
+        });
+        return;
+      } else {
+        res.status(200).send({message: "User added"});
+      }
+    })
+  })
+}
+
 exports.login = (req, res) => {
   var message = "";
   var session = req.session;
