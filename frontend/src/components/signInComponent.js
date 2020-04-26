@@ -1,4 +1,6 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
+
 //import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -48,6 +50,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  const { register, handleSubmit } = useForm();
+  const loginAttempt = data => {
+    console.log("Attempting login with username", data.username);
+    
+    fetch("http://localhost:9000/login", 
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: data.username,
+          password: data.password
+        })
+      }
+    );
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -56,17 +76,22 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form 
+          className={classes.form} 
+          noValidate 
+          onSubmit={ handleSubmit(loginAttempt) }
+        >
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
             autoFocus
+            inputRef={register}
           />
           <TextField
             variant="outlined"
@@ -78,6 +103,7 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            inputRef={register}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}

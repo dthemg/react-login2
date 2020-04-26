@@ -54,6 +54,7 @@ exports.login = (req, res) => {
             message: "User was logged in"
           });
         } else {
+          console.log("Login attempt failed")
           res.status(404).send({
             message: "User not found"
           })

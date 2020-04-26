@@ -5,7 +5,7 @@ import SignUp from './components/signUpComponent';
 
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   fetch("http://localhost:9000/isLoggedIn", {method: 'GET'})
     .then(res => res.json())
     .then(res => setLoggedIn(res.loggedIn))
@@ -17,7 +17,7 @@ function App() {
 function AppAuthenticated() {
   return (
     <div className="App">
-      <p>Authenticated app</p>
+      <h1>Authenticated app</h1>
     </div>
   );
 }
@@ -25,8 +25,8 @@ function AppAuthenticated() {
 function AppNotAuthenticated() {
   return (
     <div className="App">
-        { SignIn() }
-        { SignUp() }
+        < SignIn />
+        < SignUp />
     </div>
   );
 }
