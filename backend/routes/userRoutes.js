@@ -8,4 +8,9 @@ router.get("/profile", user.profile);
 router.get("/isLoggedIn", user.isLoggedIn);
 router.post("/signup", user.signUp)
 
+router.get("/session", (req, res) => {
+  console.log(req.sessionID)
+  res.send(req.sessionID);
+})
+
 module.exports = router;

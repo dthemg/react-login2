@@ -1,20 +1,27 @@
 var express = require('express');
-var session = require('express-session');
 var http = require('http');
 var bodyParser = require('body-parser');
 var debug = require('debug')('sql-api:server');
 var routes = require('./routes/userRoutes');
 var cors = require('cors');
+var mysqlConfig = require('./config/config');
+var session = require('express-session');
+var MySQLStore = require('express-mysql-session')(session)
+var cookieParser = require('cookie-parser');
 
 // Create app
 var app = express()
 
-// Session setup
+// Session/cookie setup
+app.use(cookieParser());
+var sessionStore = new MySQLStore(mysqlConfig);
 app.use(session({
-  secret: 'davids secret',
+  key: 'session_name',
+  secret: 'davids_secret',
+  store: sessionStore,
   resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 1000 } // Session timeout???
+  //cookie: { maxAge: 1000 } // Session timeout???
 }));
 
 // Environments

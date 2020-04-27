@@ -6,7 +6,7 @@ var exports = {};
 exports.dbConnection = function (callback) {
   console.log("Calling connector callback");
   var connection = mysql.createConnection(mysqlConfig);
-  
+
   // TODO: Experiment with express-sessions:
   // https://github.com/chill117/express-mysql-session
   // If we create it here, will it persist? Will we

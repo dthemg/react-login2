@@ -85,6 +85,10 @@ exports.login = (req, res) => {
         if (results.length > 0) {
           req.session.loggedIn = true;
           req.session.userId = results[0].user_id;
+          req.session.user = {
+            id: results[0].user_id,
+            isLoggedIn: true
+          }
           console.log("Login attempt successful");
           res.status(200).send({
             message: "User was logged in"
