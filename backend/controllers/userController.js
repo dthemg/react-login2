@@ -1,6 +1,10 @@
 var sqlConnector = require("./connector");
 
 
+// TODO: So - backend should return the session variable (I think),
+// then the frontend should use this for sending authenticated requests.
+// This might be a stupid way to do things...
+
 
 exports.home = (req, res) => {
   res.send("Return data used for the home page");
@@ -8,6 +12,10 @@ exports.home = (req, res) => {
 
 exports.isLoggedIn = (req, res) => {
   var session = req.session;
+
+  console.log(req.sessionID);
+  console.log(req.session.user);
+
   if (req.session.loggedIn) {
     res.send({
       loggedIn: true
